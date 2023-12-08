@@ -55,7 +55,7 @@ router.put("/user/:id",async (req,res)=>{
 // })
 router.delete("/user/:id",async (req,res)=>{
     try{
-        
+         
         
             await Comment.deleteMany({userId:req.params.id})
             await Post.deleteMany({userId:req.params.id})
