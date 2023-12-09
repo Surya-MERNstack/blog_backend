@@ -18,7 +18,7 @@ const commentRoute=require('./routes/comments')
 //database
 const connect=async()=>{
     try{
-        await mongoose.connect(process.env.MONGO)
+        await mongoose.connect(process.env.MONGO, {useNewUrlParser : true});
         console.log("database is connected successfully!")
     }
     catch(err){
@@ -34,7 +34,7 @@ const corsOptions = {
     credentials: true, 
   }
 
-
+ 
 //middlewares
 dotenv.config()
 app.use("/images",express.static(path.join(__dirname,"/images")))
