@@ -89,28 +89,28 @@ router.get("/logout",(req,res)=>{
     res.status(200).json("user logged out!")
 })
 
-router.post('/logins', async (req,res) => {
-    const {email,password} = req.body;
-    const userDoc = await User.findOne({email});
-    const passOk = bcrypt.compareSync(password, userDoc.password);
-    if (passOk) {
-      // logged in
-      jwt.sign({email,id:userDoc._id}, process.env.token, {}, (err,token) => {
-        if (err) throw err;
-        const {password,...others}=userDoc._doc
-        // console.log(token)
-        res.cookie('token', token).json({
-        //   id:userDoc._id,
-        //   email,
-        //   username,profilePic
-        ...others
+// router.post('/logins', async (req,res) => {
+//     const {email,password} = req.body;
+//     const userDoc = await User.findOne({email});
+//     const passOk = bcrypt.compareSync(password, userDoc.password);
+//     if (passOk) {
+//       // logged in
+//       jwt.sign({email,id:userDoc._id}, process.env.token, {}, (err,token) => {
+//         if (err) throw err;
+//         const {password,...others}=userDoc._doc
+//         // console.log(token)
+//         res.cookie('token', token).json({
+//         //   id:userDoc._id,
+//         //   email,
+//         //   username,profilePic
+//         ...others
           
-        });
-      });
-    } else {
-      res.status(400).json('wrong credentials');
-    }
-  });
+//         });
+//       });
+//     } else {
+//       res.status(400).json('wrong credentials');
+//     }
+//   });
   
   router.get('/profile', (req,res) => {
     const {token} = req.accessToken;
