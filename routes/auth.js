@@ -29,18 +29,22 @@ router.post('/register',async(req,res)=>{
 
 //login user
 router.post('/login',async(req,res)=>{
+  const {email, password} = req.body;
     try{
-       const user=await User.findOne({email:req.body.email})
-       !user && res.status(500).json("no user found!")
+      console.log("login trying")
+       const user= await User.findOne({email:email})
+       if(!user) return  res.status(500).json("no user found!")
 
-        const validated=await bcrypt.compare(req.body.password,user.password)
+       console.log(password)
+        const validated= await bcrypt.compare(req.body.password,user.password)
 
        if(!validated){
         res.status(500).json("no user found!")
        }
        else{
-        const accessToken=jwt.sign({id:user._id},process.env.token,{expiresIn:"15d"})
+        const accessToken= await jwt.sign({id:user._id},process.env.token,{expiresIn:"15d"})
         // res.cookie('accessToken',accessToken).json('ok')
+        console.log();
         
         const {password,...others}=user._doc
         res.status(200).json({...others,accessToken})
@@ -50,8 +54,8 @@ router.post('/login',async(req,res)=>{
 
     }
     catch(err){
-       res.status(500).json(err)
-    }
+      res.status(500).json({ error: 'Login is not working' });
+   }
 })
 
 router.get('/profile',async(req,res)=>{
@@ -84,28 +88,28 @@ router.get("/logout",(req,res)=>{
     res.status(200).json("user logged out!")
 })
 
-router.post('/login', async (req,res) => {
-    const {email,password} = req.body;
-    const userDoc = await User.findOne({email});
-    const passOk = bcrypt.compareSync(password, userDoc.password);
-    if (passOk) {
-      // logged in
-      jwt.sign({email,id:userDoc._id}, process.env.token, {}, (err,token) => {
-        if (err) throw err;
-        const {password,...others}=userDoc._doc
-        // console.log(token)
-        res.cookie('token', token).json({
-        //   id:userDoc._id,
-        //   email,
-        //   username,profilePic
-        ...others
+// router.post('/login', async (req,res) => {
+//     const {email,password} = req.body;
+//     const userDoc = await User.findOne({email});
+//     const passOk = bcrypt.compareSync(password, userDoc.password);
+//     if (passOk) {
+//       // logged in
+//       jwt.sign({email,id:userDoc._id}, process.env.token, {}, (err,token) => {
+//         if (err) throw err;
+//         const {password,...others}=userDoc._doc
+//         // console.log(token)
+//         res.cookie('token', token).json({
+//         //   id:userDoc._id,
+//         //   email,
+//         //   username,profilePic
+//         ...others
           
-        });
-      });
-    } else {
-      res.status(400).json('wrong credentials');
-    }
-  });
+//         });
+//       });
+//     } else {
+//       res.status(400).json('wrong credentials');
+//     }
+//   });
   
   router.get('/profile', (req,res) => {
     const {token} = req.accessToken;
