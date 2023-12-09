@@ -28,34 +28,55 @@ router.post('/register',async(req,res)=>{
 })
 
 //login user
-router.post('/login',async(req,res)=>{
-  const {email, password} = req.body;
-    try{
-      console.log("login trying")
-       const user= await User.findOne({email:email})
-       if(!user) return  res.status(500).json("no user found!")
+// router.post('/login',async(req,res)=>{
+//   const {email, password} = req.body;
+//     try{
+//       console.log("login trying")
+//        const user=  await User.findOne({email:email})
+//        if(!user) return  res.status(500).json("no user found!")
 
-       console.log(password)
-        const validated= await bcrypt.compare(req.body.password,user.password)
+//        console.log(user)
+//         const validated= await bcrypt.compare(req.body.password,user.password)
 
-       if(!validated){
-        res.status(500).json("no user found!")
-       }
-       else{
-        const accessToken= await jwt.sign({id:user._id},process.env.token,{expiresIn:"15d"})
-        // res.cookie('accessToken',accessToken).json('ok')
-        console.log();
+//        if(!validated){
+//         res.status(500).json("no user found!")
+//        }
+//        else{
+//         const accessToken= await jwt.sign({id:user._id},process.env.token,{expiresIn:"15d"})
+//         // res.cookie('accessToken',accessToken).json('ok')
+//         console.log();
         
-        const {password,...others}=user._doc
-        res.status(200).json({...others,accessToken})
-      //  console.log({...others,accessToken})
-       }
-    }
-    catch(err){
-      res.status(500).json({ error: 'Login is not working' });
-   }
-})
+//         const {password,...others}=user._doc
+//         res.status(200).json({...others,accessToken})
+//       //  console.log({...others,accessToken})
+//        }
+//     }
+//     catch(err){
+//       res.status(500).json({ error: 'Login is not working' });
+//    }
+// })
 
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    console.log("Login attempt for:", email);
+
+    const user = await User.findOne({ email: email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const validated = await bcrypt.compare(password, user.password);
+    if (!validated) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    const accessToken = jwt.sign({ id: user._id }, process.env.token, { expiresIn: "15d" });
+    const { password: userPassword, ...others } = user._doc;
+    res.status(200).json({ ...others, accessToken });
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ error: 'Login is not working' });
+  }
+});
 
 
 
