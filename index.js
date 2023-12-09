@@ -12,7 +12,7 @@ const postRoute=require('./routes/posts')
 const categoryRoute=require('./routes/categories')
 const commentRoute=require('./routes/comments')
 
-
+ 
 
 
 //database
