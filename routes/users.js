@@ -42,17 +42,6 @@ router.put("/user/:id",async (req,res)=>{
 
 
 //DELETE USER
-// router.delete("/user/:id",async (req,res)=>{
-//     try{
-//         const userId=req.params.id
-//         await User.findByIdAndDelete(req.params.id)
-//         //DELETE ALL HIS POSTS AND CATGORIES ALSO
-//         res.status(200).json('User details has been deleted')
-//     }
-//     catch(err){
-//         res.status(500).json(err)
-//     }
-// })
 router.delete("/user/:id",async (req,res)=>{
     try{
          

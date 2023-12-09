@@ -18,7 +18,7 @@ const commentRoute=require('./routes/comments')
 //database
 const connect=async()=>{
     try{
-        await mongoose.connect(process.env.MONGO, {useNewUrlParser : true});
+        await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser : true});
         console.log("database is connected successfully!")
     }
     catch(err){
