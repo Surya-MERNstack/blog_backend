@@ -7,13 +7,15 @@ const verify=require('../verifyToken')
 //CREATE POST
 router.post('/create',async(req,res)=>{
     const newPost=new Post(req.body)
+
+
     try{
         const savedPost=await newPost.save()
         res.status(200).json(savedPost)
 
     }
     catch(err){
-        res.status(500).json(err)
+        res.status(500).json({message : "User all ready Created"})
     }
 })
 
@@ -37,8 +39,6 @@ router.get("/post/:id",async(req,res)=>{
         const id=req.params.id
         const post=await Post.findById(id)
         res.status(200).json(post)
-
-
     }
     catch(err){
         res.status(500).json(err)
@@ -46,15 +46,17 @@ router.get("/post/:id",async(req,res)=>{
 })
 
 //UPDATE POST
-router.put("/post/:id",async (req,res)=>{
-    try{
-        const updatedPost=await Post.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
-        res.status(200).json(updatedPost)
+router.put("/post/:id", async (req, res) => {
+    try {
+        const updatedData = await Post.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        res.status(200).json({ message: `Post updated successfully`, updatedData: updatedData.toJSON() });
+    } catch (err) {
+        res.status(500).json(err);
     }
-    catch(err){
-        res.status(500).json(err)
-    }
-})
+});
+
+
+
 
 
 //DELETE POST

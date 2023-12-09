@@ -28,18 +28,23 @@ const connect=async()=>{
 
 
 
+//cors
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true, 
+  }
 
 
 //middlewares
 dotenv.config()
 app.use("/images",express.static(path.join(__dirname,"/images")))
 app.use(express.json())
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use("/api/auth",authRoute)
 app.use("/api/users",userRoute)
 app.use("/api/posts",postRoute)
-app.use("/api/cats",categoryRoute)
+app.use("/api/cats",categoryRoute) 
 app.use("/api/comments",commentRoute)
 
 
@@ -68,5 +73,5 @@ const PORT=process.env.PORT
 
 app.listen(PORT || 5000,()=>{
     connect()
-    console.log("app is running on port http://localhost:5000")
+    console.log(`app is running on port http://localhost:${PORT}`)
 })
