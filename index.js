@@ -111,7 +111,7 @@ mongoose.connect(Db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // CORS options
 const corsOptions = { 
-  origin: 'https://blogserver-bskv.onrender.com',
+  origin: '*',
   credentials: true,
 };
 
