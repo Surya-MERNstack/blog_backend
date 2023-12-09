@@ -99,7 +99,7 @@ const commentRoute = require('./routes/comments');
 dotenv.config();
 
 // Database connection
-const Db =  "mongodb+srv://charusurya17:CharlieDerex17@surya-ecommerce.fkvygn6.mongodb.net/blog_data?retryWrites=true&w=majority";
+const Db = "mongodb+srv://charusurya17:CharlieDerex17@surya-ecommerce.fkvygn6.mongodb.net/blog_data?retryWrites=true&w=majority";
 
 mongoose.connect(Db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -110,8 +110,8 @@ mongoose.connect(Db, { useNewUrlParser: true, useUnifiedTopology: true })
   });
 
 // CORS options
-const corsOptions = {
-  origin: 'http://localhost:5173',
+const corsOptions = { 
+  origin: '*',
   credentials: true,
 };
 

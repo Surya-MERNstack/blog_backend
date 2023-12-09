@@ -18,7 +18,7 @@ router.get("/user/:id",async(req,res)=>{
 
 
     }
-    catch(err){
+    catch(err){ 
         res.status(500).json(err)
     }
 })
