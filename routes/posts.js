@@ -2,7 +2,7 @@ const express=require('express')
 const router=express.Router()
 const Post=require('../models/Post')
 const verify=require('../verifyToken')
-
+ 
 
 //CREATE POST
 router.post('/create',async(req,res)=>{
@@ -14,7 +14,7 @@ router.post('/create',async(req,res)=>{
         res.status(200).json(savedPost)
 
     }
-    catch(err){
+    catch(err){ 
         res.status(500).json({message : "User all ready Created"})
     }
 })

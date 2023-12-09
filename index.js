@@ -45,7 +45,7 @@ app.use("/api/auth",authRoute)
 app.use("/api/users",userRoute)
 app.use("/api/posts",postRoute)
 app.use("/api/cats",categoryRoute) 
-app.use("/api/comments",commentRoute)
+app.use("/api/comments",commentRoute) 
 
 
 app.get("/",(req,res)=>{
