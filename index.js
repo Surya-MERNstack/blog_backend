@@ -28,7 +28,7 @@ mongoose.connect(Db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // CORS options
 const corsOptions = { 
-  origin: ['https://master--blogworkspace.netlify.app', "http://localhost:5173", "*"],
+  origin: ['https://master--blogworkspace.netlify.app', "http://localhost:5173", "*", "https://blogworkspace.netlify.app"],
   credentials: true,
 };
 
@@ -43,7 +43,7 @@ app.use("/api/posts", postRoute);
 app.use("/api/cats", categoryRoute);
 app.use("/api/comments", commentRoute);
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173', "*","https://master--blogworkspace.netlify.app" );
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173', "*","https://master--blogworkspace.netlify.app" , "https://blogworkspace.netlify.app");
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', true);
