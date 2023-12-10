@@ -125,6 +125,13 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/cats", categoryRoute);
 app.use("/api/comments", commentRoute);
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 // Routes
 app.get("/", (req, res) => {
@@ -137,7 +144,11 @@ const storage = multer.diskStorage({
     cb(null, 'images');
   },
   filename: (req, file, cb) => {
-    cb(null, req.body.img);
+    // cb(null, req.body.img);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    const filename = file.fieldname + '-' + uniqueSuffix + ext;
+    cb(null, filename);
   },
 });
 const upload = multer({ storage: storage });
