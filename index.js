@@ -111,7 +111,7 @@ mongoose.connect(Db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // CORS options
 const corsOptions = { 
-  origin: '*',
+  origin: 'http://localhost:5173/',
   credentials: true,
 };
 
