@@ -16,7 +16,7 @@ const commentRoute = require('./routes/comments');
 dotenv.config();
 
 // Database connection
-const Db = process.env.MONGODB_URI ;
+const Db = "mongodb+srv://charusurya17:CharlieDerex17@surya-ecommerce.fkvygn6.mongodb.net/blog_data?retryWrites=true&w=majority";
 
 mongoose.connect(Db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
