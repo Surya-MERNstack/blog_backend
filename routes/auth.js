@@ -1,31 +1,31 @@
-const express=require('express')
-const router=express.Router()
-const User=require('../models/User')
-const bcrypt=require('bcrypt')
-const jwt=require('jsonwebtoken')
+const express = require("express");
+const router = express.Router();
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 //register user
-router.post('/register',async(req,res)=>{
-    try{
-        const {username,email,password,profilePic}=req.body
-        try{
-            const salt=await bcrypt.genSalt(10)
-            const hashedPass= await bcrypt.hashSync(password,salt)
-            const user=new User({username,email,password:hashedPass,profilePic})
-            await user.save()
-            res.status(200).json(user)
-            
-    
-        }
-        catch(err){
-            res.status(500).json(err)
-        }
-
+router.post("/register", async (req, res) => {
+  try {
+    const { username, email, password, profilePic } = req.body;
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPass = await bcrypt.hashSync(password, salt);
+      const user = new User({
+        username,
+        email,
+        password: hashedPass,
+        profilePic,
+      });
+      await user.save();
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(500).json(err);
     }
-    catch(err){ 
-        console.log(err)
-    } 
-})
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 //login user
 // router.post('/login',async(req,res)=>{
@@ -45,7 +45,7 @@ router.post('/register',async(req,res)=>{
 //         const accessToken= await jwt.sign({id:user._id},process.env.token,{expiresIn:"15d"})
 //         // res.cookie('accessToken',accessToken).json('ok')
 //         console.log();
-        
+
 //         const {password,...others}=user._doc
 //         res.status(200).json({...others,accessToken})
 //       //  console.log({...others,accessToken})
@@ -56,7 +56,7 @@ router.post('/register',async(req,res)=>{
 //    }
 // })
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     console.log("Login attempt for:", email);
@@ -69,46 +69,42 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    const accessToken = jwt.sign({ id: user._id }, process.env.token, { expiresIn: "15d" });
+    const accessToken = jwt.sign({ id: user._id }, process.env.token, {
+      expiresIn: "15d",
+    });
     const { password: userPassword, ...others } = user._doc;
     res.status(200).json({ ...others, accessToken });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ error: 'Login is not working' });
+    res.status(500).json({ error: "Login is not working" });
   }
 });
 
+router.get("/profile", async (req, res) => {
+  try {
+    const { token } = req.accessToken;
+    jwt.verify(token, process.env.token, {}, (err, info) => {
+      if (err) throw err;
+      res.json(info);
+    });
 
-
-router.get('/profile',async(req,res)=>{
-    try{
-       
-       const {token}=req.accessToken
-       jwt.verify(token,process.env.token,{},(err,info)=>{
-        if(err) throw err
-        res.json(info)
-       })
-
-       jwt.verify(token,process.env.token,(err,user)=>{
-        if(err){
-            return res.status(401).json("token is not valid")
-        }
-        req.user=user
-        next()
-    })
-       
-
-    }
-    catch(err){
-       res.status(500).json(err)
-    }
-})
+    jwt.verify(token, process.env.token, (err, user) => {
+      if (err) {
+        return res.status(401).json("token is not valid");
+      }
+      req.user = user;
+      next();
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 //LOG OUT USER
-router.get("/logout",(req,res)=>{
-    res.clearCookie('accessToken',{path:"/"})
-    res.status(200).json("user logged out!")
-})
+router.get("/logout", (req, res) => {
+  res.clearCookie("accessToken", { path: "/" });
+  res.status(200).json("user logged out!");
+});
 
 // router.post('/logins', async (req,res) => {
 //     const {email,password} = req.body;
@@ -125,27 +121,24 @@ router.get("/logout",(req,res)=>{
 //         //   email,
 //         //   username,profilePic
 //         ...others
-          
+
 //         });
 //       });
 //     } else {
 //       res.status(400).json('wrong credentials');
 //     }
 //   });
-  
-  router.get('/profile', (req,res) => {
-    const {token} = req.accessToken;
-    console.log(token)
-    jwt.verify(token, process.env.token, {}, (err,info) => {
-      if (err) throw err;
-      res.json(info);
-    });
+
+router.get("/profile", (req, res) => {
+  const { token } = req.accessToken;
+  console.log(token);
+  jwt.verify(token, process.env.token, {}, (err, info) => {
+    if (err) throw err;
+    res.json(info);
   });
+});
 
-
-module.exports=router;
-
-
+module.exports = router;
 
 // router.post("/login", async (req, res) => {
 //   const { email, password } = req.body;
