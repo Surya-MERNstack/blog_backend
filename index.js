@@ -28,7 +28,7 @@ mongoose.connect(Db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // CORS options
 const corsOptions = { 
-  origin: ['https://master--blogworkspace.netlify.app', "http://localhost:5173", "*", "https://blogworkspace.netlify.app"],
+  origin: ['https://master--blogworkspace.netlify.app', "http://localhost:5173", "*", "https://blogworkspace.netlify.app", "http://localhost:3000/", "https://shopping-redlitmus.netlify.app/"],
   credentials: true,
 };
 
